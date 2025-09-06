@@ -19,12 +19,6 @@ const initialTasks = [
     status: "done",
   },
   {
-    id: 4,
-    title: "Gym",
-    description: "Work those muscles",
-    status: "todo",
-  },
-  {
     id: 5,
     title: "Study",
     description: "Work those brain cells",
@@ -39,7 +33,7 @@ const initialTasks = [
 ];
 
 const validStatuses = ["todo", "doing", "done"];
-const tasks = [];
+const tasks = [...initialTasks];
 
 function getNextId() {
   if (tasks.length === 0) return 1;
@@ -48,49 +42,39 @@ function getNextId() {
 
 function AddNewTask() {
   let added = 0;
+
   while (added < 3) {
-    const answer = prompt("Do you want to add a new task? (yes/no)").toLowerCase();
+    const answer = prompt(
+      "Do you want to add a new task? (yes/no)"
+    ).toLowerCase();
+
+    if (answer !== "yes" && answer !== "no") {
+      alert("Please answer with 'yes' or 'no'.");
+      answer = prompt("Please enter 'yes' or 'no':").toLowerCase();
+    }
 
     if (answer !== "yes") break;
 
-    const title = prompt("Enter task title:");
-    const description = prompt("Enter task description:");
-    let status = prompt("Enter task status (todo, doing, done):").toLowerCase();
+    const title = prompt("Enter task title:").toLowerCase();
+    const description = prompt("Enter task description:").toLowerCase();
+    let status = prompt("Enter task status (todo/doing/done):").toLowerCase();
 
     if (!validStatuses.includes(status)) {
-      alert("Invalid status. Please enter 'todo', 'doing', or 'done'.");
+      alert("Invalid status! Task not added.");
       continue;
     }
-
-    const newTask = {
-      id: getNextId(),
-      title,
-      description,
-      status,
-    };
-
-    tasks.push(newTask);
-    added++;
-  }
-
-  if (added === 3) {
-    alert("There are enough tasks on your board, please check them in the console.");
   }
 }
 
 function displayAllTasks() {
-  console.log("All Tasks:");
-
-  for (let i = 0; i < tasks.length; i++) {
-    const taskName = tasks[i];
-    console.log("id:", taskName.id, "Title:", taskName.title, "Description:", taskName.description, "Status:", taskName.status);
-  }
+  console.log("All Tasks:", tasks);
 }
 
 function displayCompletedTasks() {
-  console.log("Completed Tasks:");
-
-  for (let i = 0; i < tasks.length; i++) {
-    const taskName = tasks[i];
-  }
+  const completed = tasks.filter((task) => task.status === "done");
+  console.log("Completed Tasks:", completed);
 }
+
+AddNewTask();
+displayAllTasks();
+displayCompletedTasks();
