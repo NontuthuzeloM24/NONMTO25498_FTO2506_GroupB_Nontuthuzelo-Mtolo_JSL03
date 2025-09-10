@@ -18,63 +18,53 @@ const initialTasks = [
       "Gain practical experience and collaborate with others in the software development community",
     status: "done",
   },
-  {
-    id: 5,
-    title: "Study",
-    description: "Work those brain cells",
-    status: "doing",
-  },
-  {
-    id: 6,
-    title: "Sleep",
-    description: "Rest that body",
-    status: "done",
-  },
 ];
 
-const validStatuses = ["todo", "doing", "done"];
-const tasks = [...initialTasks];
-
-function getNextId() {
-  if (tasks.length === 0) return 1;
-  return tasks[tasks.length - 1].id + 1;
+// Keep adding tasks until there are 6 in total
+while (initialTasks.length < 6) {
+  addTask();
 }
 
-function AddNewTask() {
-  let added = 0;
+// Alert user when task board is full
+if (initialTasks.length === 6) {
+  alert(
+    "There are enough tasks on your board, please check them in the console."
+  );
+}
 
-  while (added < 3) {
-    const answer = prompt(
-      "Do you want to add a new task? (yes/no)"
-    ).toLowerCase();
+// Adds a new task by asking the user for input.
+// Only allows 'todo', 'doing', or 'done' as status values.
+function addTask() {
+  const taskTitle = prompt("Enter task title:");
+  const taskDescription = prompt("Enter task description:");
+  let taskStatus = prompt(
+    "Enter task status (todo, doing, done):"
+  ).toLowerCase();
 
-    if (answer !== "yes" && answer !== "no") {
-      alert("Please answer with 'yes' or 'no'.");
-      answer = prompt("Please enter 'yes' or 'no':").toLowerCase();
-    }
-
-    if (answer !== "yes") break;
-
-    const title = prompt("Enter task title:").toLowerCase();
-    const description = prompt("Enter task description:").toLowerCase();
-    let status = prompt("Enter task status (todo/doing/done):").toLowerCase();
-
-    if (!validStatuses.includes(status)) {
-      alert("Invalid status! Task not added.");
-      continue;
-    }
+  while (
+    taskStatus !== "todo" &&
+    taskStatus !== "doing" &&
+    taskStatus !== "done"
+  ) {
+    alert("Invalid status. Please enter 'todo', 'doing', or 'done'.");
+    taskStatus = prompt("Enter task status (todo, doing, done):").toLowerCase();
   }
+
+  const newTask = {
+    id: initialTasks.length + 1, // Auto-increment ID based on task count
+    title: taskTitle,
+    description: taskDescription,
+    status: taskStatus,
+  };
+
+  initialTasks.push(newTask); // Add the task to the array
 }
 
-function displayAllTasks() {
-  console.log("All Tasks:", tasks);
-}
+// Keep adding tasks until there are 6 in total
+const getCompletedTasks = () =>
+  initialTasks.filter((task) => task.status === "done");
 
-function displayCompletedTasks() {
-  const completed = tasks.filter((task) => task.status === "done");
-  console.log("Completed Tasks:", completed);
-}
+// Display tasks in the console
+console.log("All tasks: ", initialTasks);
+console.log("Completed tasks: ", getCompletedTasks());
 
-AddNewTask();
-displayAllTasks();
-displayCompletedTasks();
